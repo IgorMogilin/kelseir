@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "kelseir_db"
 
     @property
-    def database_url(self) -> str:
+    def DATABASE_URL(self) -> str:
         return (
             f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
             f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
