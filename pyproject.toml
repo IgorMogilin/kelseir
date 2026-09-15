@@ -7,6 +7,7 @@ dependencies = [
     "alembic>=1.20.0",
     "asyncpg>=0.31.0",
     "fastapi>=0.141.1",
+    "greenlet>=3.5.5",
     "loguru>=0.7.3",
     "pydantic-settings>=2.15.0",
     "redis>=8.1.0",
@@ -30,6 +31,7 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+exclude = ["migrations"]
 
 [tool.ruff.lint]
 select = [
@@ -48,6 +50,7 @@ python_version = "3.12"
 strict = true
 ignore_missing_imports = true
 plugins = ["pydantic.mypy"]
+exclude = ["migrations"]
 
 [tool.pydantic-mypy]
 init_forbid_extra = true
