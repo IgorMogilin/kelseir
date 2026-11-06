@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "kelseir_db"
 
+    # S3 environment
+    S3_ENDPOINT_URL: str = "http://localhost:9000"
+    S3_ACCESS_KEY_ID: str = "minioadmin"
+    S3_SECRET_ACCESS_KEY: str = "minioadmin"
+    S3_BUCKET_NAME: str = "kelseir-audio"
+
     # Ограничения контента
     MAX_VIDEO_DURATION: int = 1800
 
