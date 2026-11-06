@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "kelseir_db"
 
+    # Ограничения контента
+    MAX_VIDEO_DURATION: int = 1800
+
     @property
     def DATABASE_URL(self) -> str:
         return (
