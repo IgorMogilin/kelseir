@@ -1,5 +1,3 @@
-"""Тесты даунлоадера (yt-dlp замокан — без сети и без ffmpeg)."""
-
 from pathlib import Path
 from typing import Any
 
