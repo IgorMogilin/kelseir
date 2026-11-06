@@ -1,3 +1,6 @@
+"""Тесты даунлоадера (yt-dlp замокан — без сети и без ffmpeg)."""
+
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -6,10 +9,13 @@ from yt_dlp.utils import DownloadError
 
 from core.config import settings
 from worker.downloader import (
+    AgeRestrictedError,
     DurationLimitError,
+    GeoBlockedError,
     PrivateVideoError,
     VideoMetadata,
     VideoUnavailableError,
+    download_audio,
     extract_metadata,
 )
 
@@ -78,3 +84,43 @@ class TestExtractMetadata:
 
         with pytest.raises(VideoUnavailableError):
             await extract_metadata(URL)
+
+
+class TestDownloadAudio:
+    async def test_returns_mp3_path(self, mocker: MockerFixture, tmp_path: Path) -> None:
+        fake_mp3 = tmp_path / "test123.mp3"
+        fake_mp3.touch()
+        mocker.patch("worker.downloader._download_sync", return_value=fake_mp3)
+
+        result = await download_audio(URL, dest_dir=tmp_path)
+
+        assert result == fake_mp3
+
+    async def test_age_restricted_raises(self, mocker: MockerFixture, tmp_path: Path) -> None:
+        mocker.patch(
+            "worker.downloader._download_sync",
+            side_effect=DownloadError("Sign in to confirm your age"),
+        )
+
+        with pytest.raises(AgeRestrictedError):
+            await download_audio(URL, dest_dir=tmp_path)
+
+    async def test_geo_blocked_raises(self, mocker: MockerFixture, tmp_path: Path) -> None:
+        mocker.patch(
+            "worker.downloader._download_sync",
+            side_effect=DownloadError(
+                "The uploader has not made this video available in your country"
+            ),
+        )
+
+        with pytest.raises(GeoBlockedError):
+            await download_audio(URL, dest_dir=tmp_path)
+
+    async def test_unavailable_raises(self, mocker: MockerFixture, tmp_path: Path) -> None:
+        mocker.patch(
+            "worker.downloader._download_sync",
+            side_effect=DownloadError("Video unavailable"),
+        )
+
+        with pytest.raises(VideoUnavailableError):
+            await download_audio(URL, dest_dir=tmp_path)
