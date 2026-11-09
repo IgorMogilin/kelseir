@@ -46,5 +46,9 @@ class Settings(BaseSettings):
     def redis_url(self) -> str:
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
 
+    @property
+    def redis_broker_url(self) -> str:
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/2"
+
 
 settings = Settings()
