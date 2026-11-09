@@ -16,6 +16,7 @@ dependencies = [
     "redis>=8.1.0",
     "sqlalchemy>=2.0.52",
     "taskiq>=0.12.6",
+    "taskiq-redis>=1.2.3",
     "uvicorn>=0.52.4",
     "yt-dlp>=2026.8.19",
 ]
