@@ -1,5 +1,4 @@
 import asyncio
-import uuid
 from pathlib import Path
 
 import boto3
@@ -28,9 +27,9 @@ def _upload_and_presign(file_path: Path, key: str) -> str:
     return url
 
 
-async def upload_audio(file_path: Path, user_id: int) -> str:
+async def upload_audio(file_path: Path, user_id: int, video_id: str) -> str:
     """Асинх-ая обертка для функции выше. Загружает файл и отдает ссылку."""
-    key = f"audio/{user_id}/{uuid.uuid4().hex}.mp3"
+    key = f"audio/{user_id}/{video_id}.mp3"
     try:
         url = await asyncio.to_thread(_upload_and_presign, file_path, key)
     except (ClientError, BotoCoreError) as e:
